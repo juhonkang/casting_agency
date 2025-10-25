@@ -7,11 +7,23 @@ from dotenv import load_dotenv
 from datetime import datetime
 
 load_dotenv()
-database_username = os.getenv("database_username")
-database_password = os.getenv("database_password")
-database_name = os.getenv("database_name")
 
-database_path = 'postgresql://{}:{}@{}/{}'.format(database_username, database_password, 'localhost:5432', database_name)
+# Check for Render's DATABASE_URL first (production)
+database_path = os.getenv('DATABASE_URL')
+
+# If not set, use local database configuration (development)
+if not database_path:
+    database_username = os.getenv("database_username")
+    database_password = os.getenv("database_password")
+    database_name = os.getenv("database_name")
+
+    if database_username and database_password and database_name:
+        database_path = 'postgresql://{}:{}@{}/{}'.format(
+            database_username, database_password, 'localhost:5432', database_name
+        )
+    else:
+        # Use SQLite as fallback for testing
+        database_path = 'sqlite:///trivia.db'
 
 db = SQLAlchemy()
 migrate = Migrate()
