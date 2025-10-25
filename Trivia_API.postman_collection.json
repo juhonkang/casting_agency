@@ -1,0 +1,571 @@
+{
+	"info": {
+		"_postman_id": "trivia-api-collection",
+		"name": "Trivia API - Full Test Suite",
+		"description": "Complete Postman collection for testing the Trivia API with Auth0 authentication and RBAC.\n\nInstructions:\n1. Import this collection into Postman\n2. Set up environment variables (see README for details)\n3. Update tokens before testing\n4. Run tests in order for best results",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get All Categories (Trivia User)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{trivia_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": ["{{base_url}}"],
+							"path": ["categories"]
+						},
+						"description": "Fetch all available categories. Requires get:categories permission."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Categories (No Auth - Should Fail)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": ["{{base_url}}"],
+							"path": ["categories"]
+						},
+						"description": "Test that categories endpoint requires authentication. Should return 401."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Questions",
+			"item": [
+				{
+					"name": "Get Questions (Page 1 - Trivia User)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{trivia_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/questions?page=1",
+							"host": ["{{base_url}}"],
+							"path": ["questions"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Get paginated questions (10 per page). Requires get:questions permission."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Questions (Page 2)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{trivia_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/questions?page=2",
+							"host": ["{{base_url}}"],
+							"path": ["questions"],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Questions (No Auth - Should Fail)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/questions",
+							"host": ["{{base_url}}"],
+							"path": ["questions"]
+						},
+						"description": "Should return 401 Unauthorized"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Question (Trivia Manager)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{trivia_manager_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"question\": \"What is the capital of France?\",\n    \"answer\": \"Paris\",\n    \"category\": \"3\",\n    \"difficulty\": 2\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/questions",
+							"host": ["{{base_url}}"],
+							"path": ["questions"]
+						},
+						"description": "Create a new trivia question. Requires post:questions permission (Manager only)."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Question (Trivia User - Should Fail)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{trivia_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"question\": \"Test question\",\n    \"answer\": \"Test answer\",\n    \"category\": \"1\",\n    \"difficulty\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/questions",
+							"host": ["{{base_url}}"],
+							"path": ["questions"]
+						},
+						"description": "Should return 403 Forbidden - User doesn't have post:questions permission"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Question (Invalid Data)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{trivia_manager_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"question\": \"\",\n    \"answer\": \"Test\",\n    \"category\": \"1\",\n    \"difficulty\": 10\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/questions",
+							"host": ["{{base_url}}"],
+							"path": ["questions"]
+						},
+						"description": "Test input validation. Should return 400 Bad Request."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Question (Trivia Manager)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{trivia_manager_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/questions/{{question_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["questions", "{{question_id}}"]
+						},
+						"description": "Delete a question by ID. Requires delete:questions permission (Manager only).\n\nNote: Set question_id variable before running."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Question (Trivia User - Should Fail)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{trivia_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/questions/1",
+							"host": ["{{base_url}}"],
+							"path": ["questions", "1"]
+						},
+						"description": "Should return 403 Forbidden - User doesn't have delete:questions permission"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Non-Existent Question",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{trivia_manager_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/questions/99999",
+							"host": ["{{base_url}}"],
+							"path": ["questions", "99999"]
+						},
+						"description": "Should return 404 Not Found"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "Search Questions (Success)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"searchTerm\": \"title\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/questions/search",
+							"host": ["{{base_url}}"],
+							"path": ["questions", "search"]
+						},
+						"description": "Search for questions containing a search term. Returns matching questions."
+					},
+					"response": []
+				},
+				{
+					"name": "Search Questions (No Results)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"searchTerm\": \"xyzabc123notfound\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/questions/search",
+							"host": ["{{base_url}}"],
+							"path": ["questions", "search"]
+						},
+						"description": "Should return 404 when no questions match the search term"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories - Questions",
+			"item": [
+				{
+					"name": "Get Questions by Category (Science)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{trivia_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categories/1/questions",
+							"host": ["{{base_url}}"],
+							"path": ["categories", "1", "questions"]
+						},
+						"description": "Get all questions for a specific category (Category ID: 1 = Science)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Questions by Category (Invalid Category)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{trivia_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categories/999/questions",
+							"host": ["{{base_url}}"],
+							"path": ["categories", "999", "questions"]
+						},
+						"description": "Should return 404 for non-existent category"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Quiz",
+			"item": [
+				{
+					"name": "Play Quiz (All Categories)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"previous_questions\": [],\n    \"quiz_category\": {\n        \"id\": 0,\n        \"type\": \"click\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/quizzes",
+							"host": ["{{base_url}}"],
+							"path": ["quizzes"]
+						},
+						"description": "Get a random question from all categories for the quiz. Category ID 0 = all categories."
+					},
+					"response": []
+				},
+				{
+					"name": "Play Quiz (Science Category)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"previous_questions\": [],\n    \"quiz_category\": {\n        \"id\": 1,\n        \"type\": \"Science\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/quizzes",
+							"host": ["{{base_url}}"],
+							"path": ["quizzes"]
+						},
+						"description": "Get a random Science question for the quiz"
+					},
+					"response": []
+				},
+				{
+					"name": "Play Quiz (With Previous Questions)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"previous_questions\": [1, 2, 3],\n    \"quiz_category\": {\n        \"id\": 1,\n        \"type\": \"Science\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/quizzes",
+							"host": ["{{base_url}}"],
+							"path": ["quizzes"]
+						},
+						"description": "Get a random question excluding previously asked questions"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Error Handling",
+			"item": [
+				{
+					"name": "404 - Invalid Endpoint",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/invalid-endpoint",
+							"host": ["{{base_url}}"],
+							"path": ["invalid-endpoint"]
+						},
+						"description": "Test 404 error handling for non-existent endpoints"
+					},
+					"response": []
+				},
+				{
+					"name": "405 - Method Not Allowed",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": ["{{base_url}}"],
+							"path": ["categories"]
+						},
+						"description": "Test 405 error handling - POST not allowed on /categories"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "trivia_user_token",
+			"value": "YOUR_TRIVIA_USER_TOKEN_HERE",
+			"type": "string"
+		},
+		{
+			"key": "trivia_manager_token",
+			"value": "YOUR_TRIVIA_MANAGER_TOKEN_HERE",
+			"type": "string"
+		},
+		{
+			"key": "question_id",
+			"value": "1",
+			"type": "string"
+		}
+	]
+}
