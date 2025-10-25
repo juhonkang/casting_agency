@@ -73,11 +73,11 @@ The following files are already configured in the `backend/` directory:
 In the Render Web Service settings, add these environment variables:
 
 ```
-AUTH0_DOMAIN=your-tenant.us.auth0.com
+AUTH0_DOMAIN=dev-8607typd5q1j6mig.us.auth0.com
 ALGORITHMS=["RS256"]
 API_AUDIENCE=trivia-api
 FLASK_ENV=production
-DATABASE_URL=[Use the Internal Database URL from Step 3]
+DATABASE_URL=postgresql://trivia_user:ZNA8cIXEsRX7pdt9idJbykpgp2ZAx8rd@dpg-d3ugonndiees73e95ri0-a/trivia_xrm3
 ```
 
 **Important**: Replace `your-tenant.us.auth0.com` with your actual Auth0 domain.

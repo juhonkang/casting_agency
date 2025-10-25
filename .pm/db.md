@@ -1,1 +1,0 @@
-postgresql://trivia_user:ZNA8cIXEsRX7pdt9idJbykpgp2ZAx8rd@dpg-d3ugonndiees73e95ri0-a/trivia_xrm3

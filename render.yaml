@@ -11,7 +11,7 @@ services:
       - key: PYTHON_VERSION
         value: 3.11.5
       - key: AUTH0_DOMAIN
-        value: your-tenant.us.auth0.com
+        value: dev-8607typd5q1j6mig.us.auth0.com
       - key: ALGORITHMS
         value: '["RS256"]'
       - key: API_AUDIENCE
@@ -22,12 +22,6 @@ services:
         fromDatabase:
           name: trivia-db
           property: connectionString
-      - key: database_username
-        sync: false
-      - key: database_password
-        sync: false
-      - key: database_name
-        sync: false
 
 databases:
   - name: trivia-db
