@@ -2,6 +2,19 @@
 
 A full-stack trivia application that allows users to play quiz games, manage questions and categories. This project demonstrates modern web development practices with Flask backend and React frontend, featuring comprehensive API documentation, security features, and robust testing.
 
+## 🌐 Live Deployment
+
+**API Base URL:** https://trivia-api.onrender.com
+
+**Status:** ✅ Live and Running
+
+**Test the API:**
+```bash
+# Note: Protected endpoints require authentication
+curl https://trivia-api.onrender.com/questions \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
 ## Table of Contents
 
 - [Features](#features)
