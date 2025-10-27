@@ -6,18 +6,31 @@ A full-stack trivia application that allows users to play quiz games, manage que
 
 **API Base URL:** https://trivia-api-f4od.onrender.com
 
-**Status:** ✅ Live and Running
+**Status:** ✅ **LIVE AND FULLY OPERATIONAL**
 
-**Dashboard:** https://dashboard.render.com/web/srv-d3uhci1r0fns73f6tp4g
+**Auth0 Domain:** dev-8607typd5q1j6mig.us.auth0.com
 
-**Test the API:**
+**Test Results:** All 8 endpoints tested and working ✅
+- GET /categories (Protected) ✅
+- GET /questions (Protected) ✅
+- POST /questions (Protected) ✅
+- DELETE /questions/<id> (Protected) ✅
+- GET /categories/<id>/questions (Public) ✅
+- POST /questions/search (Public) ✅
+- POST /quizzes (Public) ✅
+- Authentication (401/403) ✅
+
+**Quick Test:**
 ```bash
-# Public endpoint (no auth required)
+# Public endpoint (no auth required) - Get questions by category
 curl https://trivia-api-f4od.onrender.com/categories/1/questions
 
-# Protected endpoint (requires authentication)
+# Protected endpoint (requires JWT token)
 curl https://trivia-api-f4od.onrender.com/questions \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
+
+# Expected: 401 without token
+curl https://trivia-api-f4od.onrender.com/questions
 ```
 
 ## Table of Contents
