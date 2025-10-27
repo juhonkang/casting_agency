@@ -4,14 +4,19 @@ A full-stack trivia application that allows users to play quiz games, manage que
 
 ## 🌐 Live Deployment
 
-**API Base URL:** https://trivia-api.onrender.com
+**API Base URL:** https://trivia-api-f4od.onrender.com
 
 **Status:** ✅ Live and Running
 
+**Dashboard:** https://dashboard.render.com/web/srv-d3uhci1r0fns73f6tp4g
+
 **Test the API:**
 ```bash
-# Note: Protected endpoints require authentication
-curl https://trivia-api.onrender.com/questions \
+# Public endpoint (no auth required)
+curl https://trivia-api-f4od.onrender.com/categories/1/questions
+
+# Protected endpoint (requires authentication)
+curl https://trivia-api-f4od.onrender.com/questions \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 

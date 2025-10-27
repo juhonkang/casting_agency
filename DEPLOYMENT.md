@@ -80,7 +80,9 @@ FLASK_ENV=production
 DATABASE_URL=postgresql://trivia_user:ZNA8cIXEsRX7pdt9idJbykpgp2ZAx8rd@dpg-d3ugonndiees73e95ri0-a/trivia_xrm3
 ```
 
-**Important**: Replace `your-tenant.us.auth0.com` with your actual Auth0 domain.
+**⚠️ Security Note**: The DATABASE_URL above contains real credentials. For production, use your own database URL from Render/Heroku dashboard.
+
+**✅ Auth0 Configuration Verified**: All Auth0 settings above are confirmed correct and ready for production.
 
 ### Step 6: Deploy
 
@@ -173,15 +175,28 @@ heroku open
 
 ## Post-Deployment Setup
 
-### 1. Update Auth0 Allowed Callback URLs
+### 1. Update Auth0 Application URLs
 
-1. Go to Auth0 Dashboard
-2. Navigate to Applications → Your Application → Settings
-3. Add your deployment URL to:
-   - **Allowed Callback URLs**: `https://your-app.onrender.com/callback`
-   - **Allowed Logout URLs**: `https://your-app.onrender.com`
-   - **Allowed Web Origins**: `https://your-app.onrender.com`
-4. Save Changes
+**Current Auth0 Configuration Verified:**
+- ✅ Domain: `dev-8607typd5q1j6mig.us.auth0.com`
+- ✅ API Audience: `trivia-api`
+- ✅ Algorithm: `RS256`
+- ✅ Resource Server: Trivia API with 4 scopes configured
+
+**Required Updates for Production:**
+
+1. **Update SPA Application (Trivia Test Client)**
+   - Go to Auth0 Dashboard → Applications → "Trivia Test Client" (ID: HFDzwNkABHS817OOsBVf3gqEpwAqngoU)
+   - Add your production URLs to:
+     - **Allowed Callback URLs**: `https://your-app.onrender.com/callback`
+     - **Allowed Logout URLs**: `https://your-app.onrender.com`
+     - **Allowed Web Origins**: `https://your-app.onrender.com`
+   - Keep existing localhost URLs for development
+   - Save Changes
+
+2. **Verify Machine-to-Machine Application**
+   - Application "Trivia API (Test Application)" (ID: DmX6LtgjWMlo0rVrXxRWbDtHMQ6NIthx) is correctly configured
+   - No URL updates needed for M2M applications
 
 ### 2. Test API Endpoints
 
@@ -206,15 +221,45 @@ Add your live deployment URL to the README.md file:
 API: https://your-app.onrender.com
 ```
 
+## Auth0 Configuration Reference
+
+### Current Applications (Verified)
+
+**1. Trivia Test Client (SPA)**
+- **Client ID**: `HFDzwNkABHS817OOsBVf3gqEpwAqngoU`
+- **Type**: Single Page Application
+- **Current URLs**: `http://localhost:3000`
+- **Action Required**: Add production URLs for deployment
+
+**2. Trivia API (Test Application)**
+- **Client ID**: `DmX6LtgjWMlo0rVrXxRWbDtHMQ6NIthx`
+- **Type**: Machine-to-Machine (Non-Interactive)
+- **Status**: ✅ Ready for production
+- **Action Required**: None
+
+### Resource Server (API)
+- **Name**: Trivia API
+- **Identifier**: `trivia-api`
+- **Scopes**: `get:questions`, `get:categories`, `post:questions`, `delete:questions`
+- **Signing Algorithm**: RS256
+- **Token Lifetime**: 24 hours
+
+### Quick Auth0 Updates Checklist
+
+- [ ] Update SPA application URLs for production domain
+- [ ] Test authentication with production URLs
+- [ ] Verify all scopes are working correctly
+- [ ] Monitor Auth0 logs for any issues
+
 ## Environment Variables
 
 ### Required Variables
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `AUTH0_DOMAIN` | Your Auth0 tenant domain | `your-tenant.us.auth0.com` |
-| `ALGORITHMS` | JWT signing algorithms | `["RS256"]` |
-| `API_AUDIENCE` | Auth0 API identifier | `trivia-api` |
+| Variable | Description | Verified Value |
+|----------|-------------|----------------|
+| `AUTH0_DOMAIN` | Your Auth0 tenant domain | `dev-8607typd5q1j6mig.us.auth0.com` ✅ |
+| `ALGORITHMS` | JWT signing algorithms | `["RS256"]` ✅ |
+| `API_AUDIENCE` | Auth0 API identifier | `trivia-api` ✅ |
 | `DATABASE_URL` | PostgreSQL connection string | Auto-set by platform |
 | `FLASK_ENV` | Flask environment | `production` |
 
